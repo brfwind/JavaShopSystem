@@ -23,6 +23,8 @@ public class User {
             this.password = password;
       }
 
+
+
       //方法：用户注册（包括用户名和密码）
       public void register() {
             //初始化用户名、密码
@@ -55,12 +57,12 @@ public class User {
 
             //密码创建
             while (true){
-                  System.out.print("请输入密码(长度不小于6位，必须由字符和数字组成)：\n");
+                  System.out.println("请输入密码(长度不小于6位，必须由字符和数字组成)：");
                   password = Shop.sc.next();
 
                   //密码可行性检测
                   if (password.length() < 6) {
-                        System.out.print("密码长度不能小于6位，请重新输入！\n");
+                        System.out.println("密码长度不能小于6位，请重新输入！");
                         continue;
                   }
                   else if (!password.matches(".*[A-Za-z].*") || !password.matches(".*\\d.*")){
@@ -82,4 +84,52 @@ public class User {
             }
                   System.out.println("注册成功！\n");
             }
-      }
+
+
+
+            //方法：用户登录
+            public void login()
+            {
+                  String username;
+                  String password;
+                  boolean loginSuccess = false;
+
+                  while (!loginSuccess)
+                  {
+                        System.out.println("请输入用户名：");
+                        username = Shop.sc.next();
+
+                        System.out.println("请输入登录密码：");
+                        password = Shop.sc.next();
+
+                        boolean foundUser = false;
+
+                        for (User user : Shop.userList)
+                        {
+                              if (username.equals(user.getUsername()))
+                              {
+                                    foundUser = true;
+
+                                    if (password.equals(user.getPassword()))
+                                    {
+                                          System.out.println("登录成功!");
+                                          loginSuccess = true;
+                                    }
+                                    else
+                                    {
+                                          System.out.println("密码错误，请重新输入");
+                                    }
+
+                                    break;
+                              }
+                        }
+
+                        if (!foundUser)
+                        {
+                              System.out.println("用户名不存在，请重新输入");
+                        }
+                  }
+            }
+
+
+}

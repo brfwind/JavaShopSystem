@@ -45,6 +45,7 @@ public class Shop {
                         break;
                   case 2:
                         System.out.println("您选择的菜单是：登录");
+                        user.login();
                         break;
                   case 3:
                         System.out.println("您选择的菜单是：查看商城");
