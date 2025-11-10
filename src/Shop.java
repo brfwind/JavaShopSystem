@@ -6,6 +6,7 @@ public class Shop {
       static Scanner sc = new Scanner(System.in);
       //创建用户列表
       static List<User>userList = new ArrayList<User>();
+      public static List<Good> goodList = new ArrayList<>();
 
       public static void main(String[] args) {
             Shop shop = new Shop();
@@ -49,12 +50,15 @@ public class Shop {
                         break;
                   case 3:
                         System.out.println("您选择的菜单是：查看商城");
+                        user.ShowGoodList();
                         break;
                   case 4:
                         System.out.println("您选择的菜单是：查看我购买的商品");
                         break;
                   case 5:
                         System.out.println("您选择的菜单是:管理员登录");
+                        Admin admin = new Admin();
+                        admin.adminLogin();
                         break;
                   case 6:
                         System.out.println("谢谢使用，期待与您下次再见^_^");
