@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 
 public class Admin extends User{
 
+      //管理员登录
       public void adminLogin() {
             System.out.print("请输入管理员账户：");
             String adminName = Shop.sc.next();
@@ -14,12 +15,15 @@ public class Admin extends User{
             System.out.println("管理员登陆成功！");
 
             boolean go_on = true;
+
             while (go_on) {
                   int choice = showAdminMenu();
-                  chooseAdminMenu(choice, go_on);
+                  chooseAdminMenu(choice);
                   if (choice == 5) go_on = false;
             }
       }
+
+      //显示管理员菜单
       private int showAdminMenu() {
             System.out.println("*****管理员菜单*****");
             System.out.println("\t1.添加商品");
@@ -32,7 +36,8 @@ public class Admin extends User{
             int choice = Shop.sc.nextInt();
             return choice;
       }
-      private void chooseAdminMenu(int choice, boolean go_on) {
+
+      private void chooseAdminMenu(int choice) {
             switch (choice) {
                   case 1:
                         System.out.println("您选择的菜单是：添加商品");
@@ -59,8 +64,7 @@ public class Admin extends User{
             }
       }
 
-
-
+      //添加商品
       private void addGood() {
             System.out.println("*********添加商品********");
             while (true) {
@@ -113,12 +117,14 @@ public class Admin extends User{
             }
       }
 
+      //修改商品
       private void updateGood() {
             System.out.println("*******修改商品*******");
+
             while (true){
                   System.out.println("请输入要修改的商品编号：");
                   int id = Shop.sc.nextInt();
-                  Good good = findGoodByID(id);
+                  Good good = Shop.findGoodByID(id);
                   if (good == null){
                         System.out.println("该商品不存在，请重新输入编号！");
                         continue;
@@ -145,12 +151,15 @@ public class Admin extends User{
             }
       }
 
+      //删除商品
       private void deleteGood() {
             System.out.println("*******删除商品*******");
+            Shop.showGoodList();
+
             while (true) {
                   System.out.print("请输入要删除的商品编号：");
                   int id = Shop.sc.nextInt();
-                  Good good = findGoodByID(id);
+                  Good good = Shop.findGoodByID(id);
 
                   if (good == null) {
                         System.out.println("该商品不存在，请重新输入编号！");
@@ -179,6 +188,7 @@ public class Admin extends User{
             }
       }
 
+      //打印商品列表
       private void listGoods() {
             if (Shop.goodList.isEmpty()) {
                   System.out.println("当前没有商品，请先添加商品！");

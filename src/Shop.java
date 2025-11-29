@@ -1,74 +1,97 @@
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public class Shop {
       static Scanner sc = new Scanner(System.in);
-      //创建用户列表
-      static List<User>userList = new ArrayList<User>();
-      public static List<Good> goodList = new ArrayList<>();
+
+      //用户列表
+      static List<User> userList = new ArrayList<>();
+      //商品列表
+      static List<Good> goodList = new ArrayList<>();
+      //当前用户对象
+      static User currentUser = null;
 
       public static void main(String[] args) {
             Shop shop = new Shop();
-            boolean go_on = true;
 
-            while(go_on){
-                  //展示/选择菜单
+            //初始化商城商品
+            shop.initGoodList();
+
+            while (true) {
                   int choice = shop.showMainMenu();
-                  //跳转相应菜单内容
-                  shop.chooseMenu(choice, go_on);
+                  shop.chooseMenu(choice);
             }
       }
 
-      //展示菜单，并获得用户选择的菜单选项
       private int showMainMenu() {
             System.out.println("*****欢迎进入杨侦瑞的电子商城*****");
             System.out.println("\t1.注册");
             System.out.println("\t2.登录");
             System.out.println("\t3.查看商城");
             System.out.println("\t4.查看已购买的商品");
-            System.out.println("\t5.管理员登陆");
+            System.out.println("\t5.管理员登录");
             System.out.println("\t6.退出系统");
             System.out.println("****************************");
-            System.out.println("请选择菜单：");
-            int choice = sc.nextInt();
-            return choice;
+            System.out.print("请选择菜单：");
+            return sc.nextInt();
       }
 
-      //创建用户对象，跳转子菜单
-      private void chooseMenu(int choice, boolean go_on) {
-            User user = new User();
-
+      private void chooseMenu(int choice) {
             switch (choice) {
                   case 1:
                         System.out.println("您选择的菜单是：注册");
-                        user.register();
+                        User.register();
                         break;
                   case 2:
                         System.out.println("您选择的菜单是：登录");
-                        user.login();
+                        currentUser = User.login();
                         break;
                   case 3:
                         System.out.println("您选择的菜单是：查看商城");
-                        user.ShowGoodList();
+                        showGoodList();
+                        if (currentUser != null) {
+                              System.out.print("是否要购买商品？(yes/no)：");
+                              String ans = sc.next().toLowerCase();
+                              if (ans.equals("yes")) currentUser.buy();
+                        }
                         break;
                   case 4:
                         System.out.println("您选择的菜单是：查看我购买的商品");
+                        if (currentUser == null) System.out.println("您还未登录！");
+                        else currentUser.showMyGoodList();
                         break;
                   case 5:
-                        System.out.println("您选择的菜单是:管理员登录");
                         Admin admin = new Admin();
                         admin.adminLogin();
                         break;
                   case 6:
-                        System.out.println("谢谢使用，期待与您下次再见^_^");
-                        go_on = false;
-                        //结束菜单，程序立即停止
+                        System.out.println("谢谢使用，期待下次再见！");
                         System.exit(0);
                         break;
                   default:
-                        System.out.println("您的输入有误！");
-                        break;
+                        System.out.println("输入有误！");
             }
+      }
+
+      //显示商城里的商品列表
+      public static void showGoodList() {
+            System.out.println("****************商城列表****************");
+            if (goodList.isEmpty()) { System.out.println("当前没有商品！"); return; }
+            Collections.sort(goodList);
+            System.out.printf("%-8s %-10s %-8s %-6s%n", "编号", "名称", "价格", "库存");
+            for (Good g : goodList) System.out.println(g);
+      }
+
+      void initGoodList() {
+            goodList.add(new Good(1, "苹果", BigDecimal.valueOf(5), 5));
+            goodList.add(new Good(2, "桃子", BigDecimal.valueOf(10), 10));
+      }
+
+      public static Good findGoodByID(int id) {
+            for (Good g : goodList) if (g.getId() == id) return g;
+            return null;
       }
 }
